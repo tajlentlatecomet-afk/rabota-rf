@@ -1,17 +1,27 @@
 services:
   - type: web
-    name: rabota-rf-backend
+    name: rabota-rf
     runtime: python
+    plan: free
     rootDir: backend
-    buildCommand: pip install -r requirements.txt && python seed.py
+    buildCommand: pip install -r requirements.txt
     startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
     envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.11
+      - key: SECRET_KEY
+        generateValue: true
       - key: DATABASE_URL
         fromDatabase:
           name: rabota-rf-db
           property: connectionString
 
+  - type: static
+    name: rabota-rf-site
+    rootDir: frontend
+    buildCommand: ""
+    staticPublishPath: .
+
 databases:
   - name: rabota-rf-db
-    databaseName: rabotarf
-    user: rabotarf
+    plan: free

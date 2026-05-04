@@ -1,719 +1,83 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>РаботаРФ</title>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-<style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'Roboto', sans-serif; font-size: 14px; background: #fff; color: #000; }
-body.temnaya { background: #1a1a1a; color: #fff; }
-
-.shapka { background: #fff; border-bottom: 1px solid #ddd; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
-.temnaya .shapka { background: #222; border-color: #444; }
-.logo { font-size: 22px; font-weight: 700; color: #1565c0; cursor: pointer; }
-.shapkaNavi { display: flex; gap: 16px; align-items: center; }
-.shapkaNavi span { cursor: pointer; font-size: 14px; }
-.shapkaNavi span:hover { color: #1565c0; }
-.knopkaSinaya { background: #1565c0; color: #fff; border: none; padding: 8px 18px; border-radius: 6px; cursor: pointer; font-size: 14px; font-family: 'Roboto', sans-serif; }
-.knopkaSinaya:hover { background: #1976d2; }
-.knopkaTema { background: none; border: 1px solid #ccc; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; font-family: 'Roboto', sans-serif; }
-.temnaya .knopkaTema { border-color: #555; color: #fff; }
-
-.stranitsa { display: none; }
-.stranitsa.aktivnaya { display: block; }
-
-.glavnayaHero { background: #f5f5f5; padding: 40px 20px; text-align: center; }
-.temnaya .glavnayaHero { background: #2a2a2a; }
-.glavnayaHero h1 { font-size: 28px; margin-bottom: 8px; }
-.glavnayaHero p { color: #666; margin-bottom: 20px; }
-.temnaya .glavnayaHero p { color: #aaa; }
-.poiskBlok { display: flex; gap: 8px; max-width: 600px; margin: 0 auto; }
-.poiskInput { flex: 1; padding: 10px 14px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; font-family: 'Roboto', sans-serif; }
-.temnaya .poiskInput { background: #333; border-color: #555; color: #fff; }
-
-.kontentZona { max-width: 1000px; margin: 0 auto; padding: 20px; }
-.zagolovokSektsii { font-size: 18px; font-weight: 700; margin: 24px 0 14px; }
-
-.vakansiiGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
-.vakansiyaKarta { background: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px; cursor: pointer; transition: box-shadow 0.2s; }
-.temnaya .vakansiyaKarta { background: #2a2a2a; border-color: #444; }
-.vakansiyaKarta:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
-.vakansiyaNazv { font-weight: 700; font-size: 15px; margin-bottom: 4px; }
-.vakansiyaKomp { color: #1565c0; font-size: 13px; margin-bottom: 4px; }
-.vakansiyaZarp { font-weight: 500; margin-bottom: 6px; }
-.vakansiyaTegi { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
-.teg { background: #e3f2fd; color: #1565c0; padding: 2px 8px; border-radius: 12px; font-size: 12px; }
-.temnaya .teg { background: #1a3a5c; color: #90caf9; }
-.kartaKnopki { display: flex; gap: 8px; align-items: center; }
-.knopkaOtklik { background: #1565c0; color: #fff; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; font-family: 'Roboto', sans-serif; }
-.knopkaLajk { background: none; border: 1px solid #000; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 14px; }
-.temnaya .knopkaLajk { border-color: #fff; }
-.knopkaLajk.aktivnyj { background: #000; color: #fff; }
-.temnaya .knopkaLajk.aktivnyj { background: #fff; color: #000; }
-.knopkaIzbr { background: none; border: 1px solid #000; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 14px; }
-.temnaya .knopkaIzbr { border-color: #fff; }
-.knopkaIzbr.aktivnyj { color: red; border-color: red; }
-
-.kompaniiGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
-.kompaniyaKarta { background: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 8px; padding: 14px; text-align: center; cursor: pointer; }
-.temnaya .kompaniyaKarta { background: #2a2a2a; border-color: #444; }
-.kompaniyaLogo { font-size: 32px; margin-bottom: 8px; }
-.kompaniyaNazv { font-weight: 700; font-size: 14px; }
-.kompaniyaVak { color: #666; font-size: 12px; margin-top: 4px; }
-.temnaya .kompaniyaVak { color: #aaa; }
-
-.podval { background: #f5f5f5; border-top: 1px solid #ddd; padding: 20px; text-align: center; color: #888; font-size: 12px; margin-top: 40px; }
-.temnaya .podval { background: #222; border-color: #444; }
-
-.registratsiyaObertka { max-width: 420px; margin: 40px auto; padding: 0 20px; }
-.forma { background: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 10px; padding: 24px; }
-.temnaya .forma { background: #2a2a2a; border-color: #444; }
-.forma h2 { margin-bottom: 20px; font-size: 20px; }
-.poleTekst { width: 100%; padding: 10px 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; font-family: 'Roboto', sans-serif; margin-bottom: 12px; }
-.temnaya .poleTekst { background: #333; border-color: #555; color: #fff; }
-.galochkaBlok { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 13px; }
-.tipPerekey { display: flex; gap: 12px; margin-bottom: 16px; }
-.tipKnopka { flex: 1; padding: 10px; border: 2px solid #ccc; border-radius: 6px; cursor: pointer; text-align: center; font-size: 13px; background: #fff; font-family: 'Roboto', sans-serif; }
-.temnaya .tipKnopka { background: #333; border-color: #555; color: #fff; }
-.tipKnopka.vybrana { border-color: #1565c0; background: #e3f2fd; color: #1565c0; }
-.temnaya .tipKnopka.vybrana { background: #1a3a5c; }
-.ssylka { color: #1565c0; cursor: pointer; text-decoration: underline; font-size: 13px; }
-.vhod3Knopki { display: flex; gap: 10px; margin-bottom: 12px; }
-.knopkaSots { flex: 1; padding: 9px; border: 1px solid #ccc; border-radius: 6px; cursor: pointer; font-size: 13px; background: #fff; font-family: 'Roboto', sans-serif; }
-.temnaya .knopkaSots { background: #333; border-color: #555; color: #fff; }
-
-.vakansiyaStranitsaObertka { max-width: 700px; margin: 0 auto; padding: 20px; }
-.nazadKnopka { background: none; border: none; cursor: pointer; color: #1565c0; font-size: 14px; margin-bottom: 16px; display: flex; align-items: center; gap: 4px; font-family: 'Roboto', sans-serif; }
-.vakBolshoeNazv { font-size: 24px; font-weight: 700; margin-bottom: 6px; }
-.vakKompaniyaBlok { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-.vakKompLogo { font-size: 28px; }
-.vakKompImya { color: #1565c0; font-weight: 500; }
-.vakZarpBlok { background: #e8f5e9; border-radius: 6px; padding: 10px 16px; margin-bottom: 16px; font-size: 16px; font-weight: 700; display: inline-block; }
-.temnaya .vakZarpBlok { background: #1b3a1b; }
-.vakSektsiya { margin-bottom: 16px; }
-.vakSektsiya h3 { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
-.vakOtklicKnopka { background: #1565c0; color: #fff; border: none; padding: 12px 28px; border-radius: 8px; font-size: 15px; cursor: pointer; font-family: 'Roboto', sans-serif; margin-bottom: 12px; }
-.otzvezdyBlok { display: flex; gap: 4px; margin: 10px 0; }
-.zvezda { font-size: 22px; cursor: pointer; color: #ccc; }
-.zvezda.aktivnaya { color: #f9a825; }
-
-.lcObertka { max-width: 800px; margin: 0 auto; padding: 20px; }
-.lcMenuTaby { display: flex; gap: 4px; border-bottom: 2px solid #e0e0e0; margin-bottom: 20px; flex-wrap: wrap; }
-.temnaya .lcMenuTaby { border-color: #444; }
-.lcTab { padding: 10px 16px; cursor: pointer; font-size: 14px; border-bottom: 2px solid transparent; margin-bottom: -2px; }
-.lcTab.aktivnyj { border-color: #1565c0; color: #1565c0; font-weight: 500; }
-.lcSektsiya { display: none; }
-.lcSektsiya.aktivnaya { display: block; }
-
-.rezyumeBlok { background: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; }
-.temnaya .rezyumeBlok { background: #2a2a2a; border-color: #444; }
-.rezyumeBlok h3 { margin-bottom: 14px; }
-.rezyumeStrokaTekst { width: 100%; padding: 8px 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; font-family: 'Roboto', sans-serif; margin-bottom: 10px; }
-.temnaya .rezyumeStrokaTekst { background: #333; border-color: #555; color: #fff; }
-.rezyumeTextarea { width: 100%; padding: 8px 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; font-family: 'Roboto', sans-serif; min-height: 80px; resize: vertical; margin-bottom: 10px; }
-.temnaya .rezyumeTextarea { background: #333; border-color: #555; color: #fff; }
-
-.otklikSpisok { display: flex; flex-direction: column; gap: 10px; }
-.otklikElement { background: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 8px; padding: 14px; display: flex; justify-content: space-between; align-items: center; }
-.temnaya .otklikElement { background: #2a2a2a; border-color: #444; }
-.otklikStatus { padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 500; }
-.status-ozhidanie { background: #fff3e0; color: #e65100; }
-.status-rassmotrenie { background: #e3f2fd; color: #1565c0; }
-.status-otkazano { background: #ffebee; color: #c62828; }
-.status-priglashenie { background: #e8f5e9; color: #2e7d32; }
-
-.chatObertka { display: flex; flex-direction: column; height: 420px; background: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; }
-.temnaya .chatObertka { background: #2a2a2a; border-color: #444; }
-.chatSpisokKontaktov { width: 100%; border-bottom: 1px solid #e0e0e0; }
-.temnaya .chatSpisokKontaktov { border-color: #444; }
-.chatKontakt { padding: 10px 14px; cursor: pointer; font-size: 13px; border-bottom: 1px solid #eee; }
-.temnaya .chatKontakt { border-color: #444; }
-.chatKontakt.aktivnyj { background: #e3f2fd; }
-.temnaya .chatKontakt.aktivnyj { background: #1a3a5c; }
-.chatSoobshcheniya { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
-.soobshchenieBlok { max-width: 70%; padding: 8px 12px; border-radius: 10px; font-size: 13px; line-height: 1.5; }
-.moyo { background: #1565c0; color: #fff; align-self: flex-end; border-radius: 10px 10px 0 10px; }
-.chuzhoe { background: #e0e0e0; align-self: flex-start; border-radius: 10px 10px 10px 0; }
-.temnaya .chuzhoe { background: #444; color: #fff; }
-.chatVvodBlok { display: flex; gap: 8px; padding: 10px; border-top: 1px solid #e0e0e0; }
-.temnaya .chatVvodBlok { border-color: #444; }
-.chatVvod { flex: 1; padding: 8px 12px; border: 1px solid #ccc; border-radius: 20px; font-size: 13px; font-family: 'Roboto', sans-serif; }
-.temnaya .chatVvod { background: #333; border-color: #555; color: #fff; }
-.chatOtpravit { background: #1565c0; color: #fff; border: none; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 13px; font-family: 'Roboto', sans-serif; }
-
-.modalFon { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 200; justify-content: center; align-items: center; }
-.modalFon.pokazan { display: flex; }
-.modalOkno { background: #fff; border-radius: 10px; padding: 24px; max-width: 360px; width: 90%; }
-.temnaya .modalOkno { background: #2a2a2a; color: #fff; }
-.modalZagol { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
-.modalTekst { color: #666; margin-bottom: 16px; font-size: 14px; line-height: 1.6; }
-.temnaya .modalTekst { color: #aaa; }
-.modalZakryt { background: none; border: 1px solid #ccc; padding: 8px 20px; border-radius: 6px; cursor: pointer; font-size: 14px; font-family: 'Roboto', sans-serif; }
-.temnaya .modalZakryt { border-color: #555; color: #fff; }
-
-.uvedomlenie { position: fixed; bottom: 20px; right: 20px; background: #1565c0; color: #fff; padding: 12px 20px; border-radius: 8px; font-size: 14px; z-index: 300; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
-.uvedomlenie.pokazan { opacity: 1; }
-
-.nastroikiBlok { background: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 16px; }
-.temnaya .nastroikiBlok { background: #2a2a2a; border-color: #444; }
-.nastroikiBlok h3 { margin-bottom: 14px; font-size: 16px; }
-.infoStroka { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #eee; font-size: 14px; }
-.temnaya .infoStroka { border-color: #444; }
-.infoStroka:last-child { border-bottom: none; }
-.infoZnachenie { color: #666; }
-.temnaya .infoZnachenie { color: #aaa; }
-.zagruzkaText { color: #999; font-size: 14px; padding: 20px 0; }
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>РаботаРФ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#f6f8fc;--card:#fff;--text:#111827;--muted:#6b7280;--line:#e5e7eb;--blue:#2563eb;--blue2:#1d4ed8;--green:#16a34a;--red:#dc2626;--shadow:0 16px 40px rgba(15,23,42,.08);--radius:22px}*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:linear-gradient(180deg,#f8fbff,#eef3ff);color:var(--text)}body.dark{--bg:#0f172a;--card:#111827;--text:#f8fafc;--muted:#94a3b8;--line:#263244;background:#0f172a}.top{position:sticky;top:0;z-index:5;background:rgba(255,255,255,.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}.dark .top{background:rgba(15,23,42,.86)}.bar{max-width:1180px;margin:auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{font-size:24px;font-weight:800;color:var(--blue);cursor:pointer;letter-spacing:-.04em}.nav{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.nav button,.btn{border:0;border-radius:14px;padding:10px 16px;font-weight:700;cursor:pointer;background:#eef2ff;color:#1e40af}.nav button:hover,.btn:hover{transform:translateY(-1px)}.btn.primary{background:var(--blue);color:white}.btn.green{background:var(--green);color:white}.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}.hero{max-width:1180px;margin:30px auto 0;padding:46px 20px}.heroBox{background:radial-gradient(circle at top left,#dbeafe,#fff 45%,#eff6ff);border:1px solid white;border-radius:34px;padding:52px;box-shadow:var(--shadow)}.dark .heroBox{background:linear-gradient(135deg,#172554,#111827)}h1{font-size:52px;line-height:1;margin:0 0 14px;letter-spacing:-.06em}p{color:var(--muted);line-height:1.6}.search{display:flex;gap:10px;margin-top:28px;max-width:720px}.input,textarea,select{width:100%;padding:14px 16px;border:1px solid var(--line);border-radius:16px;background:var(--card);color:var(--text);font:inherit}textarea{min-height:105px;resize:vertical}.wrap{max-width:1180px;margin:auto;padding:20px}.sectionTitle{display:flex;align-items:end;justify-content:space-between;margin:22px 0 14px}.sectionTitle h2{margin:0;font-size:24px;letter-spacing:-.03em}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));gap:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}.job{cursor:pointer;transition:.18s}.job:hover{transform:translateY(-3px)}.jobTitle{font-size:18px;font-weight:800;margin-bottom:8px}.company{color:var(--blue);font-weight:700}.salary{margin:12px 0;font-weight:800}.tags{display:flex;gap:7px;flex-wrap:wrap;margin:14px 0}.tag{font-size:12px;font-weight:700;color:#1d4ed8;background:#dbeafe;padding:5px 9px;border-radius:999px}.actions{display:flex;gap:8px;flex-wrap:wrap}.page{display:none}.page.active{display:block}.form{max-width:480px;margin:38px auto}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.tab{padding:11px 14px;border:1px solid var(--line);border-radius:14px;background:var(--card);cursor:pointer;font-weight:800;color:var(--text)}.tab.active{background:var(--blue);color:#fff}.notice{position:fixed;right:20px;bottom:20px;background:#111827;color:#fff;padding:14px 18px;border-radius:16px;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:.2s}.notice.show{opacity:1}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.list{display:flex;flex-direction:column;gap:12px}.pill{display:inline-flex;padding:6px 10px;border-radius:999px;background:#fff7ed;color:#c2410c;font-weight:800;font-size:12px}.pagination{display:flex;gap:8px;justify-content:center;margin:22px}.chat{height:470px;display:grid;grid-template-columns:190px 1fr;overflow:hidden}.contacts{border-right:1px solid var(--line);overflow:auto}.contact{padding:14px;cursor:pointer;border-bottom:1px solid var(--line);font-weight:700}.contact.active{background:#dbeafe;color:#1d4ed8}.messages{padding:16px;overflow:auto;display:flex;flex-direction:column;gap:10px}.bubble{max-width:72%;padding:10px 13px;border-radius:16px;background:#e5e7eb}.bubble.me{align-self:flex-end;background:var(--blue);color:white}.chatInput{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line)}.footer{text-align:center;color:var(--muted);padding:35px}.empty{padding:30px;text-align:center;color:var(--muted)}@media(max-width:720px){h1{font-size:34px}.heroBox{padding:28px}.search,.row{grid-template-columns:1fr;display:grid}.chat{grid-template-columns:1fr}.contacts{display:flex;border-right:0;border-bottom:1px solid var(--line)}}
+  </style>
 </head>
 <body>
+<header class="top"><div class="bar"><div class="brand" onclick="showPage('home')">РаботаРФ</div><div class="nav"><button onclick="showPage('home')">Вакансии</button><button onclick="showPage('companies')">Компании</button><button id="cabBtn" onclick="showPage('cabinet')" style="display:none">Кабинет</button><button onclick="toggleTheme()">Тема</button><button id="loginBtn" class="btn primary" onclick="showPage('login')">Войти</button><button id="logoutBtn" class="btn primary" onclick="logout()" style="display:none">Выйти</button></div></div></header>
 
-<div class="shapka">
-  <div class="logo" onclick="pokazatStrani('glavnaya')">РаботаРФ</div>
-  <div class="shapkaNavi">
-    <span onclick="pokazatStrani('glavnaya')">Вакансии</span>
-    <span onclick="pokazatStrani('kompanii')">Компании</span>
-    <span id="lcSsilka" onclick="pokazatStrani('lichnyKabinet')" style="display:none">Кабинет</span>
-    <button class="knopkaTema" onclick="pereklyuchitTemu()">🌙</button>
-    <button id="knopkaVhod" class="knopkaSinaya" onclick="pokazatStrani('vhod')">Войти</button>
-    <button id="knopkaVyjt" class="knopkaSinaya" onclick="vyjti()" style="display:none">Выйти</button>
-  </div>
-</div>
+<main>
+<section id="home" class="page active"><div class="hero"><div class="heroBox"><h1>Работа мечты ближе, чем кажется</h1><p>Вакансии, резюме, отклики и кабинет работодателя в одном месте.</p><div class="search"><input id="searchInput" class="input" placeholder="Должность, компания, навык"><button class="btn primary" onclick="searchJobs()">Найти</button></div><div style="margin-top:16px"><button class="btn green" onclick="showPage('register')">Создать аккаунт</button></div></div></div><div class="wrap"><div class="sectionTitle"><h2>Вакансии дня</h2><span id="jobsCount"></span></div><div id="jobs" class="grid"></div><div id="pages" class="pagination"></div></div></section>
 
-<div id="str-glavnaya" class="stranitsa aktivnaya">
-  <div class="glavnayaHero">
-    <h1>Найди работу своей мечты</h1>
-    <p>Тысячи вакансий по всей России</p>
-    <div class="poiskBlok">
-      <input class="poiskInput" id="poiskPole" type="text" placeholder="Должность, компания...">
-      <button class="knopkaSinaya" onclick="najtiVakansii()">Найти</button>
-    </div>
-    <div style="margin-top:12px">
-      <button class="knopkaSinaya" onclick="pokazatStrani('registratsiya')" style="margin-right:8px">Создать резюме</button>
-      <button class="knopkaSinaya" onclick="pokazatModal('pomoshch')">Помощь</button>
-    </div>
-  </div>
-  <div class="kontentZona">
-    <div class="zagolovokSektsii">Вакансии дня</div>
-    <div id="vakansiiSpisok" class="vakansiiGrid"><p class="zagruzkaText">Загрузка...</p></div>
-  </div>
-</div>
+<section id="companies" class="page"><div class="wrap"><div class="sectionTitle"><h2>Компании</h2></div><div id="companiesGrid" class="grid"></div></div></section>
 
-<div id="str-kompanii" class="stranitsa">
-  <div class="kontentZona">
-    <div class="zagolovokSektsii">Компании России</div>
-    <div id="kompaniiSpisok" class="kompaniiGrid"><p class="zagruzkaText">Загрузка...</p></div>
-  </div>
-</div>
+<section id="register" class="page"><div class="wrap"><div class="card form"><h2>Регистрация</h2><div class="tabs"><button id="typeUser" class="tab active" onclick="setType('iskatel')">Ищу работу</button><button id="typeEmployer" class="tab" onclick="setType('rabotodatel')">Работодатель</button></div><div class="row"><input id="rName" class="input" placeholder="Имя"><input id="rLast" class="input" placeholder="Фамилия"></div><br><input id="rEmail" class="input" placeholder="Email"><br><br><input id="rPhone" class="input" placeholder="Телефон"><br><br><input id="rPass" class="input" type="password" placeholder="Пароль"><br><br><button class="btn primary" style="width:100%" onclick="register()">Зарегистрироваться</button><p><span style="cursor:pointer;color:var(--blue)" onclick="showPage('login')">Уже есть аккаунт? Войти</span></p></div></div></section>
 
-<div id="str-registratsiya" class="stranitsa">
-  <div class="registratsiyaObertka">
-    <div class="forma">
-      <h2>Регистрация</h2>
-      <div class="tipPerekey">
-        <button class="tipKnopka vybrana" id="tipIskatel" onclick="vybratyTip('iskatel')">🔍 Ищу работу</button>
-        <button class="tipKnopka" id="tipRabotodatel" onclick="vybratyTip('rabotodatel')">🏢 Работодатель</button>
-      </div>
-      <input class="poleTekst" id="regImya" type="text" placeholder="Имя">
-      <input class="poleTekst" id="regFamiliya" type="text" placeholder="Фамилия">
-      <input class="poleTekst" id="regEmail" type="email" placeholder="Email">
-      <input class="poleTekst" id="regTelefon" type="tel" placeholder="Номер телефона">
-      <input class="poleTekst" id="regParol" type="password" placeholder="Пароль">
-      <div class="galochkaBlok">
-        <input type="checkbox" id="soglasie">
-        <label for="soglasie">Согласен на обработку персональных данных</label>
-      </div>
-      <button class="knopkaSinaya" style="width:100%;padding:10px" onclick="zaregistrirovatsya()">Зарегистрироваться</button>
-      <p style="margin-top:12px;font-size:13px">Уже есть аккаунт? <span class="ssylka" onclick="pokazatStrani('vhod')">Войти</span></p>
-    </div>
-  </div>
-</div>
+<section id="login" class="page"><div class="wrap"><div class="card form"><h2>Вход</h2><input id="lEmail" class="input" placeholder="Email"><br><br><input id="lPass" class="input" type="password" placeholder="Пароль"><br><br><button class="btn primary" style="width:100%" onclick="login()">Войти</button><p><span style="cursor:pointer;color:var(--blue)" onclick="showPage('register')">Нет аккаунта? Регистрация</span></p></div></div></section>
 
-<div id="str-vhod" class="stranitsa">
-  <div class="registratsiyaObertka">
-    <div class="forma">
-      <h2>Вход</h2>
-      <input class="poleTekst" id="vhodEmail" type="email" placeholder="Email">
-      <input class="poleTekst" id="vhodParol" type="password" placeholder="Пароль">
-      <button class="knopkaSinaya" style="width:100%;padding:10px" onclick="vojti()">Войти</button>
-      <p style="margin-top:12px;font-size:13px">Нет аккаунта? <span class="ssylka" onclick="pokazatStrani('registratsiya')">Регистрация</span></p>
-    </div>
-  </div>
-</div>
+<section id="jobPage" class="page"><div class="wrap"><button class="btn ghost" onclick="showPage('home')">← Назад</button><div id="jobDetail" class="card" style="margin-top:16px"></div></div></section>
 
-<div id="str-vakansiya" class="stranitsa">
-  <div class="vakansiyaStranitsaObertka">
-    <button class="nazadKnopka" onclick="pokazatStrani('glavnaya')">← Назад</button>
-    <div id="vakansiyaKontent"></div>
-  </div>
-</div>
+<section id="cabinet" class="page"><div class="wrap"><div class="sectionTitle"><h2>Личный кабинет</h2><span id="userInfo"></span></div><div id="cabTabs" class="tabs"></div><div id="cabContent"></div></div></section>
+</main>
 
-<div id="str-lichnyKabinet" class="stranitsa">
-  <div class="lcObertka">
-    <div class="zagolovokSektsii">Личный кабинет</div>
-    <div class="lcMenuTaby">
-      <div class="lcTab aktivnyj" onclick="pereklyuchitTab('rezyume', this)">Резюме</div>
-      <div class="lcTab" onclick="pereklyuchitTab('otkliki', this)">Мои отклики</div>
-      <div class="lcTab" onclick="pereklyuchitTab('chat', this)">Чат</div>
-      <div class="lcTab" onclick="pereklyuchitTab('nastroiki', this)">Настройки</div>
-    </div>
-
-    <div id="lc-rezyume" class="lcSektsiya aktivnaya">
-      <div class="rezyumeBlok">
-        <h3>Основная информация</h3>
-        <input class="rezyumeStrokaTekst" id="rez_dolzhnost" type="text" placeholder="Желаемая должность">
-        <input class="rezyumeStrokaTekst" id="rez_gorod" type="text" placeholder="Город">
-        <input class="rezyumeStrokaTekst" id="rez_zarplata" type="text" placeholder="Желаемая зарплата (руб)">
-        <textarea class="rezyumeTextarea" id="rez_oSebe" placeholder="О себе"></textarea>
-      </div>
-      <div class="rezyumeBlok">
-        <h3>Опыт работы</h3>
-        <textarea class="rezyumeTextarea" id="rez_opyt" placeholder="Опыт работы — место, должность, период"></textarea>
-      </div>
-      <div class="rezyumeBlok">
-        <h3>Образование</h3>
-        <textarea class="rezyumeTextarea" id="rez_obrazov" placeholder="Учебное заведение, специальность"></textarea>
-      </div>
-      <div class="rezyumeBlok">
-        <h3>Навыки</h3>
-        <input class="rezyumeStrokaTekst" id="rez_navyki" type="text" placeholder="Навыки через запятую">
-      </div>
-      <button class="knopkaSinaya" onclick="sohranitRezyume()">Сохранить резюме</button>
-    </div>
-
-    <div id="lc-otkliki" class="lcSektsiya">
-      <div class="otklikSpisok" id="otklikSpisok"><p class="zagruzkaText">Загрузка...</p></div>
-    </div>
-
-    <div id="lc-chat" class="lcSektsiya">
-      <div class="chatObertka">
-        <div class="chatSpisokKontaktov">
-          <div class="chatKontakt aktivnyj" onclick="vybratyChat('Яндекс')">🏢 Яндекс — HR Анна</div>
-          <div class="chatKontakt" onclick="vybratyChat('Сбер')">🏦 Сбер — Рекрутер</div>
-          <div class="chatKontakt" onclick="vybratyChat('Поддержка')">🛠 Техподдержка</div>
-        </div>
-        <div class="chatSoobshcheniya" id="chatSoobshcheniya"></div>
-        <div class="chatVvodBlok">
-          <input class="chatVvod" id="chatVvod" type="text" placeholder="Сообщение..." onkeydown="if(event.key==='Enter')otpravitSoobshchenie()">
-          <button class="chatOtpravit" onclick="otpravitSoobshchenie()">→</button>
-        </div>
-      </div>
-    </div>
-
-    <div id="lc-nastroiki" class="lcSektsiya">
-      <div class="nastroikiBlok">
-        <h3>Аккаунт</h3>
-        <div class="infoStroka"><span>Имя</span><span class="infoZnachenie" id="nastImya">—</span></div>
-        <div class="infoStroka"><span>Email</span><span class="infoZnachenie" id="nastEmail">—</span></div>
-        <div class="infoStroka"><span>Телефон</span><span class="infoZnachenie" id="nastTelefon">—</span></div>
-      </div>
-      <div class="nastroikiBlok">
-        <h3>Оценить работодателя</h3>
-        <input class="rezyumeStrokaTekst" id="otzyv_komp" type="text" placeholder="Название компании">
-        <textarea class="rezyumeTextarea" id="otzyv_tekst" placeholder="Отзыв о компании"></textarea>
-        <div class="otzvezdyBlok" id="zvezdyBlok">
-          <span class="zvezda" onclick="vybratZvezdu(1)">★</span>
-          <span class="zvezda" onclick="vybratZvezdu(2)">★</span>
-          <span class="zvezda" onclick="vybratZvezdu(3)">★</span>
-          <span class="zvezda" onclick="vybratZvezdu(4)">★</span>
-          <span class="zvezda" onclick="vybratZvezdu(5)">★</span>
-        </div>
-        <button class="knopkaSinaya" onclick="otpravitOtzyv()">Отправить отзыв</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div id="str-kompaniyaStrani" class="stranitsa">
-  <div class="vakansiyaStranitsaObertka">
-    <button class="nazadKnopka" onclick="pokazatStrani('kompanii')">← Назад</button>
-    <div id="kompaniyaKontent"></div>
-  </div>
-</div>
-
-<div class="modalFon" id="modal-pomoshch">
-  <div class="modalOkno">
-    <div class="modalZagol">Нужна помощь?</div>
-    <div class="modalTekst">Напишите нам в чате поддержки или задайте вопрос через форму.</div>
-    <button class="modalZakryt" onclick="zakrytModal('pomoshch')">Закрыть</button>
-  </div>
-</div>
-
-<div class="podval">© 2024 РаботаРФ — Все права защищены</div>
-<div class="uvedomlenie" id="uvedomlenie"></div>
+<div class="footer">© 2026 РаботаРФ</div><div id="notice" class="notice"></div>
 
 <script>
-var BEKEND_URL = "https://rabota-rf.onrender.com";
+const BEKEND_URL = "https://rabota-rf.onrender.com";
+let token = localStorage.getItem('token');
+let user = JSON.parse(localStorage.getItem('user') || 'null');
+let accountType = 'iskatel';
+let currentPage = 1;
+let lastQuery = '';
+let currentChat = 'Яндекс';
 
-var tekushchayaStranitsa = 'glavnaya';
-var tekushchijChat = 'Яндекс';
-var vybrannyeZvezdy = 0;
-var tekushchijPol = 'iskatel';
-var token = localStorage.getItem('token') || null;
-var tekushchijPolzovatel = JSON.parse(localStorage.getItem('polzovatel') || 'null');
-var lajki = JSON.parse(localStorage.getItem('lajki') || '[]');
-var izbrannye = JSON.parse(localStorage.getItem('izbrannye') || '[]');
-
-var vakansiiCache = [];
-
-var chatSoobsheniya = {
-  'Яндекс': [{ot:'chuzhoe',tekst:'Здравствуйте! Рассмотрели ваше резюме. Готовы пригласить на собеседование?'}],
-  'Сбер': [{ot:'chuzhoe',tekst:'Добрый день! Спасибо за отклик на нашу вакансию.'}],
-  'Поддержка': [{ot:'chuzhoe',tekst:'Здравствуйте! Чем могу помочь?'}]
-};
-var avtoOtvety = {
-  'Яндекс': ['Спасибо! Ждём вас.','Можете уточнить детали?','Отлично, записали вас.'],
-  'Сбер': ['Мы вам перезвоним.','Спасибо за интерес к компании!','Хорошо, записали.'],
-  'Поддержка': ['Разберёмся в течение 24 часов.','Понял вас, помогу!','Есть ещё вопросы?']
-};
-
-async function apiZapros(metod, put, danye, trebToken) {
-  var nastrojki = {method: metod, headers: {'Content-Type': 'application/json'}};
-  if (trebToken && token) nastrojki.headers['Authorization'] = 'Bearer ' + token;
-  if (danye) nastrojki.body = JSON.stringify(danye);
-  try {
-    var otvet = await fetch(BEKEND_URL + put, nastrojki);
-    var json = await otvet.json();
-    if (!otvet.ok) throw new Error(json.detail || 'Ошибка');
-    return json;
-  } catch(e) {
-    throw e;
-  }
-}
-
-function pokazatStrani(nazv) {
-  var vse = document.querySelectorAll('.stranitsa');
-  for (var i = 0; i < vse.length; i++) vse[i].classList.remove('aktivnaya');
-  document.getElementById('str-' + nazv).classList.add('aktivnaya');
-  tekushchayaStranitsa = nazv;
-  window.scrollTo(0,0);
-  if (nazv === 'kompanii') zagruzitKompanii();
-}
-
-function pokazatModal(nazv) { document.getElementById('modal-' + nazv).classList.add('pokazan'); }
-function zakrytModal(nazv) { document.getElementById('modal-' + nazv).classList.remove('pokazan'); }
-
-function pokazatUvedomlenie(tekst) {
-  var el = document.getElementById('uvedomlenie');
-  el.textContent = tekst;
-  el.classList.add('pokazan');
-  setTimeout(function(){ el.classList.remove('pokazan'); }, 2500);
-}
-
-function pereklyuchitTemu() { document.body.classList.toggle('temnaya'); }
-
-function vybratyTip(tip) {
-  tekushchijPol = tip;
-  document.getElementById('tipIskatel').classList.toggle('vybrana', tip==='iskatel');
-  document.getElementById('tipRabotodatel').classList.toggle('vybrana', tip==='rabotodatel');
-}
-
-async function zaregistrirovatsya() {
-  var imya = document.getElementById('regImya').value.trim();
-  var familiya = document.getElementById('regFamiliya').value.trim();
-  var email = document.getElementById('regEmail').value.trim();
-  var telefon = document.getElementById('regTelefon').value.trim();
-  var parol = document.getElementById('regParol').value;
-  var soglasie = document.getElementById('soglasie').checked;
-  if (!imya || !familiya || !email || !parol) { pokazatUvedomlenie('Заполните все поля!'); return; }
-  if (!soglasie) { pokazatUvedomlenie('Нужно согласие на обработку данных!'); return; }
-  try {
-    var otvet = await apiZapros('POST', '/registratsiya', {imya,familiya,email,telefon,parol,tip:tekushchijPol});
-    token = otvet.token;
-    tekushchijPolzovatel = {imya: otvet.imya, email: otvet.email, telefon, tip: otvet.tip};
-    localStorage.setItem('token', token);
-    localStorage.setItem('polzovatel', JSON.stringify(tekushchijPolzovatel));
-    obnovitInterfejs();
-    pokazatStrani('lichnyKabinet');
-    pokazatUvedomlenie('Регистрация прошла успешно!');
-  } catch(e) { pokazatUvedomlenie(e.message); }
-}
-
-async function vojti() {
-  var email = document.getElementById('vhodEmail').value.trim();
-  var parol = document.getElementById('vhodParol').value;
-  if (!email || !parol) { pokazatUvedomlenie('Заполните все поля!'); return; }
-  try {
-    var otvet = await apiZapros('POST', '/vhod', {email, parol});
-    token = otvet.token;
-    tekushchijPolzovatel = {imya: otvet.imya, email: otvet.email, tip: otvet.tip};
-    localStorage.setItem('token', token);
-    localStorage.setItem('polzovatel', JSON.stringify(tekushchijPolzovatel));
-    obnovitInterfejs();
-    pokazatStrani('glavnaya');
-    pokazatUvedomlenie('Вы вошли!');
-  } catch(e) { pokazatUvedomlenie(e.message); }
-}
-
-function vyjti() {
-  token = null;
-  tekushchijPolzovatel = null;
-  localStorage.removeItem('token');
-  localStorage.removeItem('polzovatel');
-  obnovitInterfejs();
-  pokazatStrani('glavnaya');
-  pokazatUvedomlenie('Вы вышли из аккаунта');
-}
-
-function obnovitInterfejs() {
-  var vojden = !!token && !!tekushchijPolzovatel;
-  document.getElementById('knopkaVhod').style.display = vojden ? 'none' : '';
-  document.getElementById('knopkaVyjt').style.display = vojden ? '' : 'none';
-  document.getElementById('lcSsilka').style.display = vojden ? '' : 'none';
-  if (vojden && tekushchijPolzovatel) {
-    document.getElementById('nastImya').textContent = tekushchijPolzovatel.imya || '—';
-    document.getElementById('nastEmail').textContent = tekushchijPolzovatel.email || '—';
-    document.getElementById('nastTelefon').textContent = tekushchijPolzovatel.telefon || '—';
-  }
-}
-
-async function najtiVakansii() {
-  var zapros = document.getElementById('poiskPole').value.trim();
-  var put = '/vakansii' + (zapros ? '?poisk=' + encodeURIComponent(zapros) : '');
-  try {
-    var danye = await apiZapros('GET', put);
-    vakansiiCache = danye;
-    renderVakansii(danye);
-  } catch(e) { pokazatUvedomlenie('Ошибка загрузки'); }
-}
-
-async function zagruzitVakansii() {
-  try {
-    var danye = await apiZapros('GET', '/vakansii');
-    vakansiiCache = danye;
-    renderVakansii(danye);
-  } catch(e) {
-    document.getElementById('vakansiiSpisok').innerHTML = '<p style="color:#c00">Не удалось подключиться к серверу. Проверьте BEKEND_URL.</p>';
-  }
-}
-
-async function zagruzitKompanii() {
-  try {
-    var danye = await apiZapros('GET', '/kompanii');
-    renderKompanii(danye);
-  } catch(e) { pokazatUvedomlenie('Ошибка загрузки компаний'); }
-}
-
-function renderVakansii(spisok) {
-  var kontejner = document.getElementById('vakansiiSpisok');
-  if (!spisok || spisok.length === 0) { kontejner.innerHTML = '<p class="zagruzkaText">Вакансии не найдены</p>'; return; }
-  kontejner.innerHTML = '';
-  for (var i = 0; i < spisok.length; i++) {
-    var v = spisok[i];
-    var tegiArr = v.tegi ? v.tegi.split(',') : [];
-    var tegiHtml = tegiArr.map(function(t){ return '<span class="teg">'+t.trim()+'</span>'; }).join('');
-    var lajknuta = lajki.indexOf(v.id) !== -1;
-    var izbrana = izbrannye.indexOf(v.id) !== -1;
-    var karta = document.createElement('div');
-    karta.className = 'vakansiyaKarta';
-    karta.innerHTML = '<div class="vakansiyaNazv">'+(v.logo||'')+ ' '+v.nazvanie+'</div>'+
-      '<div class="vakansiyaKomp">'+v.kompaniya+'</div>'+
-      '<div class="vakansiyaZarp">'+v.zarplata+'</div>'+
-      '<div class="vakansiyaTegi">'+tegiHtml+'</div>'+
-      '<div class="kartaKnopki">'+
-      '<button class="knopkaOtklik" onclick="otkliknutsya('+v.id+',event)">Откликнуться</button>'+
-      '<button class="knopkaLajk'+(lajknuta?' aktivnyj':'')+'" id="lajk-'+v.id+'" onclick="toggleLajk('+v.id+',event)">👍</button>'+
-      '<button class="knopkaIzbr'+(izbrana?' aktivnyj':'')+'" id="izbr-'+v.id+'" onclick="toggleIzbr('+v.id+',event)">♥</button>'+
-      '</div>';
-    karta.addEventListener('click', function(vid){ return function(e){ if(e.target.tagName!=='BUTTON') otkrytVakansiyu(vid); }; }(v.id));
-    kontejner.appendChild(karta);
-  }
-}
-
-function renderKompanii(spisok) {
-  var kontejner = document.getElementById('kompaniiSpisok');
-  kontejner.innerHTML = '';
-  for (var i = 0; i < spisok.length; i++) {
-    var k = spisok[i];
-    var karta = document.createElement('div');
-    karta.className = 'kompaniyaKarta';
-    karta.innerHTML = '<div class="kompaniyaLogo">'+(k.logo||'🏢')+'</div>'+
-      '<div class="kompaniyaNazv">'+k.nazvanie+'</div>'+
-      '<div class="kompaniyaVak">'+k.vakansij_count+' вакансий</div>';
-    karta.addEventListener('click', function(komp){ return function(){ otkrytKomaniyu(komp); }; }(k));
-    kontejner.appendChild(karta);
-  }
-}
-
-async function otkrytVakansiyu(id) {
-  try {
-    var v = await apiZapros('GET', '/vakansii/'+id);
-    var trebStr = v.trebovaniya ? v.trebovaniya.split(',').map(function(t){ return '<li>'+t.trim()+'</li>'; }).join('') : '';
-    document.getElementById('vakansiyaKontent').innerHTML =
-      '<div class="vakBolshoeNazv">'+v.nazvanie+'</div>'+
-      '<div class="vakKompaniyaBlok"><span class="vakKompLogo">'+(v.logo||'🏢')+'</span><span class="vakKompImya">'+v.kompaniya+'</span></div>'+
-      '<div class="vakZarpBlok">'+v.zarplata+'</div>'+
-      '<div class="vakSektsiya"><h3>Описание</h3><p>'+v.opisanie+'</p></div>'+
-      '<div class="vakSektsiya"><h3>Требования</h3><ul>'+trebStr+'</ul></div>'+
-      '<div class="vakSektsiya"><h3>Режим работы</h3><p>'+v.rezhim+'</p></div>'+
-      '<button class="vakOtklicKnopka" onclick="otkliknutsya('+v.id+',event)">Откликнуться</button>';
-    pokazatStrani('vakansiya');
-  } catch(e) { pokazatUvedomlenie('Ошибка загрузки вакансии'); }
-}
-
-function otkrytKomaniyu(k) {
-  var vakComp = vakansiiCache.filter(function(v){ return v.kompaniya === k.nazvanie; });
-  var vakHtml = vakComp.map(function(v){
-    return '<div class="vakansiyaKarta" onclick="otkrytVakansiyu('+v.id+')" style="margin-bottom:10px">'+
-      '<div class="vakansiyaNazv">'+v.nazvanie+'</div>'+
-      '<div class="vakansiyaZarp">'+v.zarplata+'</div></div>';
-  }).join('');
-  document.getElementById('kompaniyaKontent').innerHTML =
-    '<div style="font-size:48px;margin-bottom:10px">'+(k.logo||'🏢')+'</div>'+
-    '<div class="vakBolshoeNazv">'+k.nazvanie+'</div>'+
-    '<p style="color:#666;margin:10px 0">'+k.opisanie+'</p>'+
-    '<div class="zagolovokSektsii">Вакансии компании ('+vakComp.length+')</div>'+vakHtml;
-  pokazatStrani('kompaniyaStrani');
-}
-
-async function otkliknutsya(id, event) {
-  if (event) event.stopPropagation();
-  if (!token) { pokazatStrani('vhod'); return; }
-  try {
-    await apiZapros('POST', '/otkliki', {vakansiya_id: id}, true);
-    pokazatUvedomlenie('Отклик отправлен!');
-  } catch(e) { pokazatUvedomlenie(e.message); }
-}
-
-function toggleLajk(id, event) {
-  event.stopPropagation();
-  var idx = lajki.indexOf(id);
-  var btn = document.getElementById('lajk-'+id);
-  if (idx===-1) { lajki.push(id); btn.classList.add('aktivnyj'); }
-  else { lajki.splice(idx,1); btn.classList.remove('aktivnyj'); }
-  localStorage.setItem('lajki', JSON.stringify(lajki));
-}
-
-function toggleIzbr(id, event) {
-  event.stopPropagation();
-  var idx = izbrannye.indexOf(id);
-  var btn = document.getElementById('izbr-'+id);
-  if (idx===-1) { izbrannye.push(id); btn.classList.add('aktivnyj'); pokazatUvedomlenie('Добавлено в избранное!'); }
-  else { izbrannye.splice(idx,1); btn.classList.remove('aktivnyj'); }
-  localStorage.setItem('izbrannye', JSON.stringify(izbrannye));
-}
-
-function pereklyuchitTab(nazv, elem) {
-  var sek = document.querySelectorAll('.lcSektsiya');
-  for (var i = 0; i < sek.length; i++) sek[i].classList.remove('aktivnaya');
-  document.getElementById('lc-'+nazv).classList.add('aktivnaya');
-  var taby = document.querySelectorAll('.lcTab');
-  for (var i = 0; i < taby.length; i++) taby[i].classList.remove('aktivnyj');
-  if (elem) elem.classList.add('aktivnyj');
-  if (nazv==='otkliki') zagruzitOtkliki();
-  if (nazv==='chat') renderChat();
-  if (nazv==='rezyume') zagruzitRezyume();
-}
-
-async function zagruzitOtkliki() {
-  if (!token) { document.getElementById('otklikSpisok').innerHTML = '<p class="zagruzkaText">Войдите чтобы увидеть отклики</p>'; return; }
-  try {
-    var danye = await apiZapros('GET', '/otkliki/moi', null, true);
-    var kontejner = document.getElementById('otklikSpisok');
-    if (danye.length===0) { kontejner.innerHTML = '<p class="zagruzkaText">Вы ещё не откликались ни на одну вакансию</p>'; return; }
-    var statusKlass = {'Ожидание':'status-ozhidanie','На рассмотрении':'status-rassmotrenie','Отказано':'status-otkazano','Приглашение':'status-priglashenie'};
-    kontejner.innerHTML = '';
-    for (var i = 0; i < danye.length; i++) {
-      var o = danye[i];
-      var el = document.createElement('div');
-      el.className = 'otklikElement';
-      el.innerHTML = '<div><div style="font-weight:700">'+o.nazvanie+'</div><div style="color:#666;font-size:13px">'+o.kompaniya+'</div></div>'+
-        '<span class="otklikStatus '+(statusKlass[o.status]||'')+'">'+o.status+'</span>';
-      kontejner.appendChild(el);
-    }
-  } catch(e) { pokazatUvedomlenie('Ошибка загрузки откликов'); }
-}
-
-async function zagruzitRezyume() {
-  if (!token) return;
-  try {
-    var r = await apiZapros('GET', '/rezyume/moe', null, true);
-    if (r && r.dolzhnost) document.getElementById('rez_dolzhnost').value = r.dolzhnost || '';
-    if (r && r.gorod) document.getElementById('rez_gorod').value = r.gorod || '';
-    if (r && r.zarplata) document.getElementById('rez_zarplata').value = r.zarplata || '';
-    if (r && r.o_sebe) document.getElementById('rez_oSebe').value = r.o_sebe || '';
-    if (r && r.opyt) document.getElementById('rez_opyt').value = r.opyt || '';
-    if (r && r.obrazovanie) document.getElementById('rez_obrazov').value = r.obrazovanie || '';
-    if (r && r.navyki) document.getElementById('rez_navyki').value = r.navyki || '';
-  } catch(e) {}
-}
-
-async function sohranitRezyume() {
-  if (!token) { pokazatStrani('vhod'); return; }
-  var danye = {
-    dolzhnost: document.getElementById('rez_dolzhnost').value,
-    gorod: document.getElementById('rez_gorod').value,
-    zarplata: document.getElementById('rez_zarplata').value,
-    o_sebe: document.getElementById('rez_oSebe').value,
-    opyt: document.getElementById('rez_opyt').value,
-    obrazovanie: document.getElementById('rez_obrazov').value,
-    navyki: document.getElementById('rez_navyki').value
-  };
-  try {
-    await apiZapros('POST', '/rezyume', danye, true);
-    pokazatUvedomlenie('Резюме сохранено!');
-  } catch(e) { pokazatUvedomlenie('Ошибка сохранения'); }
-}
-
-function renderChat() {
-  var kontejner = document.getElementById('chatSoobshcheniya');
-  kontejner.innerHTML = '';
-  var soob = chatSoobsheniya[tekushchijChat] || [];
-  for (var i = 0; i < soob.length; i++) {
-    var s = soob[i];
-    var el = document.createElement('div');
-    el.className = 'soobshchenieBlok '+s.ot;
-    el.textContent = s.tekst;
-    kontejner.appendChild(el);
-  }
-  kontejner.scrollTop = kontejner.scrollHeight;
-}
-
-function vybratyChat(imya) {
-  tekushchijChat = imya;
-  var kontakty = document.querySelectorAll('.chatKontakt');
-  for (var i = 0; i < kontakty.length; i++) kontakty[i].classList.toggle('aktivnyj', kontakty[i].textContent.includes(imya));
-  renderChat();
-}
-
-function otpravitSoobshchenie() {
-  var vvod = document.getElementById('chatVvod');
-  var tekst = vvod.value.trim();
-  if (!tekst) return;
-  if (!chatSoobsheniya[tekushchijChat]) chatSoobsheniya[tekushchijChat] = [];
-  chatSoobsheniya[tekushchijChat].push({ot:'moyo', tekst});
-  vvod.value = '';
-  renderChat();
-  var otvety = avtoOtvety[tekushchijChat] || ['Хорошо!'];
-  var otvet = otvety[Math.floor(Math.random()*otvety.length)];
-  var chat = tekushchijChat;
-  setTimeout(function(){ chatSoobsheniya[chat].push({ot:'chuzhoe',tekst:otvet}); if(tekushchijChat===chat) renderChat(); }, 1000);
-}
-
-function vybratZvezdu(n) {
-  vybrannyeZvezdy = n;
-  var zvezdy = document.querySelectorAll('.zvezda');
-  for (var i = 0; i < zvezdy.length; i++) zvezdy[i].classList.toggle('aktivnaya', i<n);
-}
-
-async function otpravitOtzyv() {
-  if (!token) { pokazatStrani('vhod'); return; }
-  var komp = document.getElementById('otzyv_komp').value.trim();
-  var tekst = document.getElementById('otzyv_tekst').value.trim();
-  if (!komp) { pokazatUvedomlenie('Укажите компанию!'); return; }
-  if (!vybrannyeZvezdy) { pokazatUvedomlenie('Поставьте оценку!'); return; }
-  try {
-    await apiZapros('POST', '/otzyvy', {kompaniya:komp, tekst, zvezdy:vybrannyeZvezdy}, true);
-    pokazatUvedomlenie('Отзыв отправлен!');
-    document.getElementById('otzyv_komp').value = '';
-    document.getElementById('otzyv_tekst').value = '';
-    vybratZvezdu(0);
-  } catch(e) { pokazatUvedomlenie('Ошибка'); }
-}
-
-obnovitInterfejs();
-zagruzitVakansii();
+function notify(t){const n=document.getElementById('notice');n.textContent=t;n.classList.add('show');setTimeout(()=>n.classList.remove('show'),2500)}
+function authHeaders(){return token ? {'Authorization':'Bearer '+token} : {}}
+async function api(path, opts={}){const res=await fetch(BEKEND_URL+path,{...opts,headers:{'Content-Type':'application/json',...(opts.headers||{}),...(opts.auth?authHeaders():{})}});const data=await res.json().catch(()=>({}));if(!res.ok)throw new Error(data.detail||'Ошибка сервера');return data}
+function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);if(id==='companies')loadCompanies();if(id==='cabinet')loadCabinet()}
+function refreshNav(){const logged=!!token&&!!user;loginBtn.style.display=logged?'none':'';logoutBtn.style.display=logged?'':'none';cabBtn.style.display=logged?'':'none';if(user)userInfo.textContent=user.imya+' · '+(user.tip==='rabotodatel'?'Работодатель':'Соискатель')}
+function toggleTheme(){document.body.classList.toggle('dark')}
+function setType(t){accountType=t;typeUser.classList.toggle('active',t==='iskatel');typeEmployer.classList.toggle('active',t==='rabotodatel')}
+async function register(){try{const data=await api('/registratsiya',{method:'POST',body:JSON.stringify({imya:rName.value,familiya:rLast.value,email:rEmail.value,telefon:rPhone.value,parol:rPass.value,tip:accountType})});token=data.token;user=data;localStorage.setItem('token',token);localStorage.setItem('user',JSON.stringify(user));refreshNav();showPage('cabinet');notify('Готово, аккаунт создан')}catch(e){notify(e.message)}}
+async function login(){try{const data=await api('/vhod',{method:'POST',body:JSON.stringify({email:lEmail.value,parol:lPass.value})});token=data.token;user=data;localStorage.setItem('token',token);localStorage.setItem('user',JSON.stringify(user));refreshNav();showPage('home');notify('Вы вошли')}catch(e){notify(e.message)}}
+function logout(){token=null;user=null;localStorage.clear();refreshNav();showPage('home');notify('Вы вышли')}
+async function loadJobs(page=1,q=''){try{currentPage=page;lastQuery=q;const data=await api(`/vakansii?stranitsa=${page}&razmer=9${q?'&poisk='+encodeURIComponent(q):''}`);jobsCount.textContent=`${data.vsego} найдено`;jobs.innerHTML=data.vakansii.map(jobCard).join('')||'<div class="empty">Вакансии не найдены</div>';renderPages(data.vsego_stranits)}catch(e){jobs.innerHTML='<div class="empty">Не удалось загрузить вакансии. Проверь BEKEND_URL.</div>'}}
+function searchJobs(){loadJobs(1,searchInput.value.trim())}
+function renderPages(total){pages.innerHTML='';if(total<=1)return;for(let i=1;i<=total;i++){const b=document.createElement('button');b.className='btn '+(i===currentPage?'primary':'ghost');b.textContent=i;b.onclick=()=>loadJobs(i,lastQuery);pages.appendChild(b)}}
+function jobCard(v){const tags=(v.tegi||'').split(',').filter(Boolean).map(t=>`<span class="tag">${t.trim()}</span>`).join('');return `<div class="card job" onclick="openJob(${v.id})"><div class="jobTitle">${v.logo||'🏢'} ${v.nazvanie}</div><div class="company">${v.kompaniya}</div><div class="salary">${v.zarplata}</div><div class="tags">${tags}</div><div class="actions"><button class="btn primary" onclick="applyJob(${v.id},event)">Откликнуться</button><button class="btn ghost" onclick="likeJob(${v.id},event)">+1</button><button class="btn ghost" onclick="favJob(${v.id},event)">♥</button></div></div>`}
+async function openJob(id){try{const v=await api('/vakansii/'+id);jobDetail.innerHTML=`<h2>${v.logo||'🏢'} ${v.nazvanie}</h2><p class="company">${v.kompaniya}</p><h3>${v.zarplata}</h3><p><b>Режим:</b> ${v.rezhim}</p><p>${v.opisanie}</p><h3>Требования</h3><ul>${(v.trebovaniya||'').split(',').filter(Boolean).map(x=>`<li>${x.trim()}</li>`).join('')}</ul><button class="btn primary" onclick="applyJob(${v.id},event)">Откликнуться</button>`;showPage('jobPage')}catch(e){notify(e.message)}}
+async function applyJob(id,e){if(e)e.stopPropagation();if(!token){showPage('login');return}try{await api('/otkliki',{method:'POST',auth:true,body:JSON.stringify({vakansiya_id:id})});notify('Отклик отправлен')}catch(err){notify(err.message)}}
+async function likeJob(id,e){e.stopPropagation();if(!token){showPage('login');return}try{await api('/lajki/'+id,{method:'POST',auth:true});notify('Лайк сохранён')}catch(err){notify(err.message)}}
+async function favJob(id,e){e.stopPropagation();if(!token){showPage('login');return}try{await api('/izbrannye/'+id,{method:'POST',auth:true});notify('Избранное обновлено')}catch(err){notify(err.message)}}
+async function loadCompanies(){try{const data=await api('/kompanii');companiesGrid.innerHTML=data.map(k=>`<div class="card"><h2>${k.logo||'🏢'}</h2><h3>${k.nazvanie}</h3><p>${k.opisanie}</p><span class="tag">${k.vakansij_count} вакансий</span></div>`).join('')}catch(e){companiesGrid.innerHTML='<div class="empty">Ошибка загрузки</div>'}}
+function tabBtn(id,name,active=false){return `<button class="tab ${active?'active':''}" onclick="cabTab('${id}')">${name}</button>`}
+function loadCabinet(){if(!token){showPage('login');return}const emp=user.tip==='rabotodatel';cabTabs.innerHTML=emp?[tabBtn('myJobs','Мои вакансии',true),tabBtn('chat','Чат'),tabBtn('profile','Профиль')].join(''):[tabBtn('resume','Резюме',true),tabBtn('responses','Отклики'),tabBtn('favorites','Избранное'),tabBtn('chat','Чат'),tabBtn('review','Отзывы'),tabBtn('profile','Профиль')].join('');cabTab(emp?'myJobs':'resume')}
+function setActiveTab(id){document.querySelectorAll('#cabTabs .tab').forEach(b=>b.classList.remove('active'));[...document.querySelectorAll('#cabTabs .tab')].find(b=>b.getAttribute('onclick').includes(id))?.classList.add('active')}
+function cabTab(id){setActiveTab(id);if(id==='resume')resumeView();if(id==='responses')responsesView();if(id==='favorites')favoritesView();if(id==='chat')chatView();if(id==='review')reviewView();if(id==='profile')profileView();if(id==='myJobs')myJobsView()}
+function resumeView(){cabContent.innerHTML=`<div class="card"><h2>Моё резюме</h2><input id="rez1" class="input" placeholder="Должность"><br><br><input id="rez2" class="input" placeholder="Город"><br><br><input id="rez3" class="input" placeholder="Зарплата"><br><br><textarea id="rez4" placeholder="О себе"></textarea><br><br><textarea id="rez5" placeholder="Опыт"></textarea><br><br><textarea id="rez6" placeholder="Образование"></textarea><br><br><input id="rez7" class="input" placeholder="Навыки"><br><br><button class="btn primary" onclick="saveResume()">Сохранить</button></div>`;api('/rezyume/moe',{auth:true}).then(r=>{rez1.value=r.dolzhnost||'';rez2.value=r.gorod||'';rez3.value=r.zarplata||'';rez4.value=r.o_sebe||'';rez5.value=r.opyt||'';rez6.value=r.obrazovanie||'';rez7.value=r.navyki||''}).catch(()=>{})}
+async function saveResume(){try{await api('/rezyume',{method:'POST',auth:true,body:JSON.stringify({dolzhnost:rez1.value,gorod:rez2.value,zarplata:rez3.value,o_sebe:rez4.value,opyt:rez5.value,obrazovanie:rez6.value,navyki:rez7.value})});notify('Резюме сохранено')}catch(e){notify(e.message)}}
+async function responsesView(){cabContent.innerHTML='<div class="card empty">Загрузка...</div>';try{const a=await api('/otkliki/moi',{auth:true});cabContent.innerHTML=`<div class="list">${a.map(o=>`<div class="card"><b>${o.nazvanie}</b><p>${o.kompaniya}</p><span class="pill">${o.status}</span></div>`).join('')||'<div class="card empty">Откликов пока нет</div>'}</div>`}catch(e){notify(e.message)}}
+async function favoritesView(){try{const ids=await api('/izbrannye/moi',{auth:true});const arr=[];for(const id of ids){arr.push(await api('/vakansii/'+id))}cabContent.innerHTML=`<div class="grid">${arr.map(jobCard).join('')||'<div class="card empty">Избранное пусто</div>'}</div>`}catch(e){notify(e.message)}}
+function chatView(){cabContent.innerHTML=`<div class="card chat"><div class="contacts">${['Яндекс','Сбер','Авито','Поддержка'].map(x=>`<div class="contact ${x===currentChat?'active':''}" onclick="currentChat='${x}';chatView()">${x}</div>`).join('')}</div><div><div id="msgs" class="messages"></div><div class="chatInput"><input id="chatText" class="input" placeholder="Сообщение"><button class="btn primary" onclick="sendChat()">Отправить</button></div></div></div>`;loadChat()}
+async function loadChat(){try{const a=await api('/chat/soobshcheniya?komu_kompaniya='+encodeURIComponent(currentChat),{auth:true});msgs.innerHTML=(a.length?a:[{tekst:'Здравствуйте! Чем можем помочь?',ot_kogo:'bot'}]).map(m=>`<div class="bubble ${m.ot_kogo==='user'?'me':''}">${m.tekst}</div>`).join('')}catch(e){msgs.innerHTML='<div class="bubble">Чат готов</div>'}}
+async function sendChat(){if(!chatText.value.trim())return;try{await api('/chat/otpravit',{method:'POST',auth:true,body:JSON.stringify({komu_kompaniya:currentChat,tekst:chatText.value})});chatText.value='';loadChat()}catch(e){notify(e.message)}}
+function reviewView(){cabContent.innerHTML=`<div class="card"><h2>Отзыв о компании</h2><input id="revCompany" class="input" placeholder="Компания"><br><br><textarea id="revText" placeholder="Текст отзыва"></textarea><br><br><select id="revStars"><option value="5">5 звёзд</option><option value="4">4 звезды</option><option value="3">3 звезды</option><option value="2">2 звезды</option><option value="1">1 звезда</option></select><br><br><button class="btn primary" onclick="sendReview()">Отправить</button></div>`}
+async function sendReview(){try{await api('/otzyvy',{method:'POST',auth:true,body:JSON.stringify({kompaniya:revCompany.value,tekst:revText.value,zvezdy:Number(revStars.value)})});notify('Отзыв отправлен')}catch(e){notify(e.message)}}
+function profileView(){cabContent.innerHTML=`<div class="card"><h2>Профиль</h2><p><b>${user.imya}</b> · ${user.email}</p><input id="pPhone" class="input" placeholder="Телефон" value="${user.telefon||''}"><br><br><input id="pBirth" class="input" placeholder="Дата рождения"><br><br><textarea id="pAbout" placeholder="О себе"></textarea><br><br><button class="btn primary" onclick="saveProfile()">Сохранить</button></div>`}
+async function saveProfile(){try{await api('/profil',{method:'PUT',auth:true,body:JSON.stringify({telefon:pPhone.value,data_rozhdeniya:pBirth.value,o_sebe:pAbout.value})});user.telefon=pPhone.value;localStorage.setItem('user',JSON.stringify(user));refreshNav();notify('Профиль сохранён')}catch(e){notify(e.message)}}
+function myJobsView(){cabContent.innerHTML=`<div class="card"><h2>Добавить вакансию</h2><input id="j1" class="input" placeholder="Название"><br><br><input id="j2" class="input" placeholder="Компания"><br><br><input id="j3" class="input" placeholder="Зарплата"><br><br><select id="j4"><option>Офис</option><option>Удалённо</option><option>Гибрид</option></select><br><br><textarea id="j5" placeholder="Описание"></textarea><br><br><input id="j6" class="input" placeholder="Требования через запятую"><br><br><input id="j7" class="input" placeholder="Теги через запятую"><br><br><button class="btn primary" onclick="addJob()">Опубликовать</button></div><div class="sectionTitle"><h2>Мои вакансии</h2></div><div id="myJobs" class="list"></div>`;loadMyJobs()}
+async function addJob(){try{await api('/vakansii',{method:'POST',auth:true,body:JSON.stringify({nazvanie:j1.value,kompaniya:j2.value,zarplata:j3.value,rezhim:j4.value,opisanie:j5.value,trebovaniya:j6.value,tegi:j7.value})});notify('Вакансия опубликована');myJobsView();loadJobs()}catch(e){notify(e.message)}}
+async function loadMyJobs(){try{const a=await api('/moi_vakansii',{auth:true});myJobs.innerHTML=a.map(v=>`<div class="card"><b>${v.nazvanie}</b><p>${v.zarplata}</p><button class="btn ghost" onclick="deleteJob(${v.id})">Удалить</button></div>`).join('')||'<div class="card empty">Пока нет вакансий</div>'}catch(e){myJobs.innerHTML='<div class="card empty">Ошибка загрузки</div>'}}
+async function deleteJob(id){try{await api('/vakansii/'+id,{method:'DELETE',auth:true});notify('Удалено');loadMyJobs()}catch(e){notify(e.message)}}
+refreshNav();loadJobs();
 </script>
 </body>
 </html>
